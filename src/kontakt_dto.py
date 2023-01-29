@@ -1,23 +1,22 @@
 import uuid
 import json
-from datetime import datetime, timezone
 import os
-import re
-from datetime import date, timedelta
+from datetime import datetime, timezone, date, timedelta
 from http_exception import ValidationException
+from validation_util import check_email, check_required_field
 
 
 def create(item: dict):
     name = item.get('name')
-    checkRequiredField(name, 'name')
+    check_required_field(name, 'name')
     betreff = item.get('betreff')
-    checkRequiredField(betreff, 'betreff')
+    check_required_field(betreff, 'betreff')
     nachricht = item.get('nachricht')
-    checkRequiredField(nachricht, 'nachricht')
+    check_required_field(nachricht, 'nachricht')
     zeitpunkt = item.get('zeitpunkt')
     telefonnummer = item.get('telefonnummer')
     email = item.get('email')
-    checkRequiredField(email, 'email')
+    check_required_field(email, 'email')
     check_email(email)
     gelesen = item.get('gelesen')
     typ = item.get('typ')
@@ -32,19 +31,6 @@ def create(item: dict):
         typ,
         item.get('id')
     )
-
-
-def checkRequiredField(field, fieldname: str):
-    if field is None or len(field) <= 0:
-        raise ValidationException(f"'{fieldname}' is missing.")
-
-
-def check_email(email):
-    regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-    if (re.search(regex, email)):
-        pass
-    else:
-        raise ValidationException(f"invalid email '{email}'.")
 
 
 def fromisoformat(d: str):

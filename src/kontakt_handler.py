@@ -18,7 +18,7 @@ def post():
     tenant_id = extractTenant(event)
     body = extractBody(event)
     kontakt = kontakt_controller.create_kontakt(tenant_id, body)
-    email_service.send_html_email(kontakt)
+    email_service.send_html_email(tenant_id, kontakt)
     return response(201, kontakt.to_json())
 
 

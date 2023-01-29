@@ -1,6 +1,7 @@
 import os
 import boto3
 from kontakt_dto import KontaktDTO
+from email_config_dto import EmailConfigDTO
 from boto3.dynamodb.conditions import Key
 
 
@@ -61,3 +62,30 @@ def delete_kontakt(tenant_id: str, id: str):
             "id": id
         }
     )
+
+
+def get_email_config_table():
+    dynamodb = boto3.resource('dynamodb')
+    table_name = os.getenv('EMAIL_CONFIG_TABLE_NAME')
+    return dynamodb.Table(table_name)
+
+
+def put_email_config(tenant_id: str, email_config: EmailConfigDTO):
+    table = get_email_config_table()
+    table.put_item(
+        Item={
+            'tenant-id': tenant_id,
+            'email-from': email_config.email_from,
+            'email-to': email_config.email_to
+        }
+    )
+
+
+def get_email_config(tenant_id: str):
+    table = get_email_config_table()
+    result = table.get_item(
+        Key={
+            "tenant-id": tenant_id
+        }
+    )
+    return result.get('Item')
