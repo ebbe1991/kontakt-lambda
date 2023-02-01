@@ -1,6 +1,8 @@
 from aws_lambda_powertools.event_handler import APIGatewayHttpResolver
 import kontakt_controller
+import email_config_controller
 from kontakt_controller import KontaktDTO
+from email_config_controller import EmailConfigDTO
 from lambda_utils.event_utils import extract_body, extract_id, extract_tenant
 from lambda_utils.response_utils import response, empty_response
 from lambda_utils.exception import ValidationException
@@ -19,11 +21,16 @@ def post():
     event = app.current_event
     tenant_id = extract_tenant(event)
     body = extract_body(event)
+    send_email = getenv_as_boolean('SEND_EMAIL', False)
+    
+    email_config = email_config_controller.get_email_config(
+        tenant_id) if send_email else None
     kontakt = kontakt_controller.create_kontakt(tenant_id, body)
 
     headers = None
-    if getenv_as_boolean('SEND_EMAIL', False):
-        email_sent = email_service.send_html_email(tenant_id, kontakt)
+    if send_email:
+        email_sent = email_service.send_html_email(
+            tenant_id, kontakt, email_config)
         headers = {"email_sent": [str(email_sent)]}
 
     return response(201, kontakt.to_json(), headers)

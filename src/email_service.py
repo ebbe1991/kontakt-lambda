@@ -6,15 +6,9 @@ from email_config_dto import EmailConfigDTO
 from lambda_utils.exception import ValidationException
 
 
-def send_html_email(tenant_id: str, kontakt: KontaktDTO):
+def send_html_email(tenant_id: str, kontakt: KontaktDTO, email_config: EmailConfigDTO):
     kontakt_email = kontakt.email
     betreff = kontakt.betreff
-
-    email_config: EmailConfigDTO = email_config_controller.get_email_config(
-        tenant_id)
-    if email_config is None or email_config.email_from is None or email_config.email_to is None:
-        raise ValidationException(
-            f"Email-Config not present (tenant-id={tenant_id}).")
 
     CHARSET = "UTF-8"
     HTML_EMAIL_CONTENT = create_html_content(tenant_id, kontakt)
