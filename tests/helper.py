@@ -52,6 +52,10 @@ def extract_body(response):
     return json.loads(response['body'])
 
 
+def extract_headers(response):
+    return response['headers']
+
+
 def extract_status_code(response):
     return response['statusCode']
 

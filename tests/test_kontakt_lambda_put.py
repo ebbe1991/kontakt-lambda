@@ -1,13 +1,12 @@
 import json
 from datetime import datetime
 from src import kontakt_controller
-
 from src import kontakt_handler
 from src.kontakt_dto import KontaktDTO
 from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 
 
-def test_update_kontakt_ok(lambda_context, dynamodb_table):
+def test_update_kontakt_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -45,7 +44,7 @@ def test_update_kontakt_ok(lambda_context, dynamodb_table):
         createdKontakt.id).to_json())
 
 
-def test_update_kontakt_required_field_to_null_not_ok(lambda_context, dynamodb_table):
+def test_update_kontakt_required_field_to_null_not_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -71,10 +70,10 @@ def test_update_kontakt_required_field_to_null_not_ok(lambda_context, dynamodb_t
         '/api/kontakt/{id}', 'PUT', json.dumps(itemUpdate), pathParameters), lambda_context)
 
     assert response == lambda_response(
-        400, json.dumps({'error_text': "'name' is missing."}))
+        400, json.dumps({'error_text': "'name' not present."}))
 
 
-def test_update_kontakt_with_unknown_id_not_ok(lambda_context, dynamodb_table):
+def test_update_kontakt_with_unknown_id_not_ok(lambda_context, kontakt_table):
     pathParameters = {
         "id": 'unknown'
     }
@@ -89,10 +88,10 @@ def test_update_kontakt_with_unknown_id_not_ok(lambda_context, dynamodb_table):
         '/api/kontakt/{id}', 'PUT', json.dumps(itemUpdate), pathParameters), lambda_context)
 
     assert response == lambda_response(
-        400, json.dumps({'error_text': "unknown id 'unknown' (tenant='mytenant1') to update."}))
+        400, json.dumps({'error_text': "unknown id 'unknown' (tenant='mytenant1')."}))
 
 
-def test_update_kontakt_set_null_value(lambda_context, dynamodb_table):
+def test_update_kontakt_set_null_value(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -130,7 +129,7 @@ def test_update_kontakt_set_null_value(lambda_context, dynamodb_table):
         createdKontakt.id).to_json())
 
 
-def test_update_kontakt_without_body_not_ok(lambda_context, dynamodb_table):
+def test_update_kontakt_without_body_not_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -153,7 +152,7 @@ def test_update_kontakt_without_body_not_ok(lambda_context, dynamodb_table):
         {'error_text': 'body not present.'}))
 
 
-def test_update_kontakt_without_id_not_ok(lambda_context, dynamodb_table):
+def test_update_kontakt_without_id_not_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -176,7 +175,7 @@ def test_update_kontakt_without_id_not_ok(lambda_context, dynamodb_table):
         {'error_text': 'id not present.'}))
 
 
-def test_update_kontakt_without_tenant_id_not_ok(lambda_context, dynamodb_table):
+def test_update_kontakt_without_tenant_id_not_ok(lambda_context, kontakt_table):
     headers = {
         'Content-Type': 'application/json'
     }

@@ -1,12 +1,11 @@
 import json
 from datetime import datetime
-
 from src import kontakt_handler
 from src.kontakt_dto import KontaktDTO
 from tests.helper import event, lambda_response, extract_id
 
 
-def test_create_kontakt_ok(lambda_context, dynamodb_table):
+def test_create_kontakt_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefaellt mir!",
@@ -35,7 +34,7 @@ def test_create_kontakt_ok(lambda_context, dynamodb_table):
         id).to_json())
 
 
-def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, dynamodb_table):
+def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -53,7 +52,7 @@ def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, dynamodb_
         {'error_text': "Invalid isoformat string: '2023-01-01T12.12'"}))
 
 
-def test_create_kontakt_missing_field_name_bad_request(lambda_context, dynamodb_table):
+def test_create_kontakt_missing_field_name_bad_request(lambda_context, kontakt_table):
     item = {
         'betreff': "Super!",
         "nachricht": "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
@@ -67,10 +66,10 @@ def test_create_kontakt_missing_field_name_bad_request(lambda_context, dynamodb_
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
 
     assert response == lambda_response(
-        400, json.dumps({'error_text': "'name' is missing."}))
+        400, json.dumps({'error_text': "'name' not present."}))
 
 
-def test_create_kontakt_missing_field_betreff_bad_request(lambda_context, dynamodb_table):
+def test_create_kontakt_missing_field_betreff_bad_request(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         "nachricht": "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
@@ -84,10 +83,10 @@ def test_create_kontakt_missing_field_betreff_bad_request(lambda_context, dynamo
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
 
     assert response == lambda_response(
-        400, json.dumps({'error_text': "'betreff' is missing."}))
+        400, json.dumps({'error_text': "'betreff' not present."}))
 
 
-def test_create_kontakt_missing_field_nachricht_bad_request(lambda_context, dynamodb_table):
+def test_create_kontakt_missing_field_nachricht_bad_request(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -101,10 +100,10 @@ def test_create_kontakt_missing_field_nachricht_bad_request(lambda_context, dyna
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
 
     assert response == lambda_response(400, json.dumps(
-        {'error_text': "'nachricht' is missing."}))
+        {'error_text': "'nachricht' not present."}))
 
 
-def test_create_kontakt_missing_field_email_bad_request(lambda_context, dynamodb_table):
+def test_create_kontakt_missing_field_email_bad_request(lambda_context, kontakt_table):
     item = {
         'name': 'Helene',
         'betreff': "Super!",
@@ -118,10 +117,10 @@ def test_create_kontakt_missing_field_email_bad_request(lambda_context, dynamodb
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
 
     assert response == lambda_response(
-        400, json.dumps({'error_text': "'email' is missing."}))
+        400, json.dumps({'error_text': "'email' not present."}))
 
 
-def test_create_kontakt_invalid_email_bad_request(lambda_context, dynamodb_table):
+def test_create_kontakt_invalid_email_bad_request(lambda_context, kontakt_table):
     item = {
         "name": "Helene",
         'betreff': "Super!",
@@ -136,10 +135,10 @@ def test_create_kontakt_invalid_email_bad_request(lambda_context, dynamodb_table
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
 
     assert response == lambda_response(
-        400, json.dumps({'error_text': "invalid email 'fischer.de'."}))
+        400, json.dumps({'error_text': "invalid email address 'fischer.de'."}))
 
 
-def test_create_kontakt_without_optional_parameters_ok(lambda_context, dynamodb_table):
+def test_create_kontakt_without_optional_parameters_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
@@ -164,7 +163,7 @@ def test_create_kontakt_without_optional_parameters_ok(lambda_context, dynamodb_
         id).to_json())
 
 
-def test_create_kontakt_without_body_not_ok(lambda_context, dynamodb_table):
+def test_create_kontakt_without_body_not_ok(lambda_context, kontakt_table):
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST'), lambda_context)
 
@@ -172,7 +171,7 @@ def test_create_kontakt_without_body_not_ok(lambda_context, dynamodb_table):
         {'error_text': 'body not present.'}))
 
 
-def test_create_kontakt_without_tenant_id_not_ok(lambda_context, dynamodb_table):
+def test_create_kontakt_without_tenant_id_not_ok(lambda_context, kontakt_table):
     headers = {
         'Content-Type': 'application/json'
     }

@@ -2,3 +2,4 @@ boto3==1.26.58
 moto==4.1.1
 pytest==7.2.1
 aws_lambda_powertools==2.6.0
+lambda_utils @ file://C:\Users\lhs91\Projekte\happy-cow-backend\lambda-utils

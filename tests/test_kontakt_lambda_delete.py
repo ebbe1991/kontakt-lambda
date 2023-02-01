@@ -1,11 +1,10 @@
 import json
 from src import kontakt_controller
-
 from src import kontakt_handler
 from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 
 
-def test_delete_kontakt_ok(lambda_context, dynamodb_table):
+def test_delete_kontakt_ok(lambda_context, kontakt_table):
     item = {
         'name': "Testuser Helene",
         'betreff': "Gefaellt mir!",
@@ -30,7 +29,7 @@ def test_delete_kontakt_ok(lambda_context, dynamodb_table):
     assert len(kontakte) == 0
 
 
-def test_delete_kontakt_not_ok(lambda_context, dynamodb_table):
+def test_delete_kontakt_not_ok(lambda_context, kontakt_table):
     pathParameters = {
         "id": "abc123"
     }
@@ -40,7 +39,7 @@ def test_delete_kontakt_not_ok(lambda_context, dynamodb_table):
     assert response == lambda_response(404)
 
 
-def test_delete_kontakt_without_tenant_id_not_ok(lambda_context, dynamodb_table):
+def test_delete_kontakt_without_tenant_id_not_ok(lambda_context, kontakt_table):
     pathParameters = {
         "id": "abc123"
     }

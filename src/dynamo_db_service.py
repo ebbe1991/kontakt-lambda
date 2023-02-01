@@ -46,12 +46,7 @@ def get_kontakte(tenant_id: str) -> list:
     response = table.query(
         KeyConditionExpression=Key('tenant-id').eq(tenant_id)
     )
-    data = response['Items']
-
-    while 'LastEvaluatedKey' in response:
-        response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
-        data.extend(response['Items'])
-    return data
+    return response['Items']
 
 
 def delete_kontakt(tenant_id: str, id: str):

@@ -1,5 +1,5 @@
 from kontakt_dto import KontaktDTO, create
-from http_exception import ValidationException
+from lambda_utils.exception import UnknownIdException
 import dynamo_db_service
 
 
@@ -17,7 +17,7 @@ def update_kontakt(tenant_id: str, id: str, dto: dict) -> KontaktDTO:
         dynamo_db_service.put_kontakt(tenant_id, kontakt)
         return kontakt
     else:
-        raise ValidationException(f"unknown id '{id}' (tenant='{tenant_id}') to update.")
+        raise UnknownIdException(id, tenant_id)
 
 
 def get_kontakt(tenant_id: str, id: str) -> KontaktDTO:

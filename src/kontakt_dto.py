@@ -1,9 +1,11 @@
 import uuid
 import json
 import os
-from datetime import datetime, timezone, date, timedelta
-from http_exception import ValidationException
-from validation_util import check_email, check_required_field
+from datetime import datetime
+from lambda_utils.exception import ValidationException
+from lambda_utils.ttl import compute_ttl_for_datetime
+from lambda_utils.validation import check_email, check_required_field
+from lambda_utils.env_utils import getenv_as_boolean
 
 
 def create(item: dict):
@@ -63,23 +65,11 @@ class KontaktDTO:
         self.email = email
         self.gelesen = gelesen
         self.typ = typ
-        self.ttl = compute_ttl(zeitpunkt)
+        self.ttl = compute_ttl_for_datetime(zeitpunkt) if getenv_as_boolean(
+            'TTL_FEATURE_ACTIVE', True) else None
 
     def to_json(self):
         return json.dumps(self.__dict__, cls=KontaktDTOEncoder)
-
-
-def compute_ttl(zeitpunkt: date) -> int:
-    ttl_feature_active = int(os.getenv('TTL_FEATURE_ACTIVE', 1)) == 1
-    if ttl_feature_active == 1 and zeitpunkt:
-        local_date = zeitpunkt + timedelta(days=100)
-        utc_date = datetime(year=local_date.year,
-                            month=local_date.month,
-                            day=local_date.day,
-                            tzinfo=timezone.utc)
-        return int(utc_date.timestamp())
-    else:
-        return None
 
 
 class KontaktDTOEncoder(json.JSONEncoder):

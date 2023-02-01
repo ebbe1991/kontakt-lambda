@@ -1,11 +1,10 @@
 import json
 from src import kontakt_controller
-
 from src import kontakt_handler
 from tests.helper import event, extract_body, extract_status_code, lambda_response, DEFAULT_TENANT_ID
 
 
-def test_get_kontakte_ok(lambda_context, dynamodb_table):
+def test_get_kontakte_ok(lambda_context, kontakt_table):
     item1 = {
         'name': "Testuser Helene",
         'betreff': "Gefaellt mir!",
@@ -31,7 +30,7 @@ def test_get_kontakte_ok(lambda_context, dynamodb_table):
     assert len(body) == 2
 
 
-def test_get_kontakte_empty_ok(lambda_context, dynamodb_table):
+def test_get_kontakte_empty_ok(lambda_context, kontakt_table):
     response = kontakt_handler.handle(
         event('/api/kontakt', 'GET'), lambda_context)
     body = extract_body(response)
@@ -40,7 +39,7 @@ def test_get_kontakte_empty_ok(lambda_context, dynamodb_table):
     assert len(body) == 0
 
 
-def test_get_kontakte_without_tenant_id_not_ok(lambda_context, dynamodb_table):
+def test_get_kontakte_without_tenant_id_not_ok(lambda_context, kontakt_table):
     headers = {
         'Content-Type': 'application/json'
     }

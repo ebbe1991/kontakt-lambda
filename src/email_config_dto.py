@@ -1,13 +1,13 @@
 import json
-from validation_util import check_required_field, check_email
+from lambda_utils.validation import check_required_field, check_email
 
 
 def create(item: dict):
-    email_from = item.get('email_from')
-    check_required_field(email_from, 'email_from')
+    email_from = item.get('email-from')
+    check_required_field(email_from, 'email-from')
     check_email(email_from)
-    email_to = item.get('email_to')
-    check_required_field(email_to, 'email_to')
+    email_to = item.get('email-to')
+    check_required_field(email_to, 'email-to')
     check_email(email_to)
     return EmailConfigDTO(email_from, email_to)
 

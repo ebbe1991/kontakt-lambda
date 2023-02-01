@@ -1,6 +1,5 @@
 from kontakt_dto import KontaktDTO
 from datetime import datetime
-
 import email_service
 
 def test_create_content_with_telefonnummer():
