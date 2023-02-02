@@ -2,7 +2,7 @@ import uuid
 import json
 from datetime import datetime
 from lambda_utils.exception import ValidationException
-from lambda_utils.ttl import compute_ttl_for_datetime
+from lambda_utils.date_utils import compute_ttl_for_datetime
 from lambda_utils.validation import check_email, check_required_field
 from lambda_utils.env_utils import getenv_as_boolean
 
