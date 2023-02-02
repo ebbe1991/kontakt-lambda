@@ -24,7 +24,6 @@ def put_kontakt(tenant_id: str, kontakt: KontaktDTO):
             'telefonnummer': kontakt.telefonnummer,
             'email': kontakt.email,
             'gelesen': kontakt.gelesen,
-            'typ': kontakt.typ,
             'ttl': kontakt.ttl
         }
     )

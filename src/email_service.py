@@ -1,9 +1,8 @@
 import boto3
-import os
-import email_config_controller
 from kontakt_dto import KontaktDTO
 from email_config_dto import EmailConfigDTO
-from lambda_utils.exception import ValidationException
+from lambda_utils.ses_utils import is_email_send_ok
+from lambda_utils.exception import HttpException
 
 
 def send_html_email(tenant_id: str, kontakt: KontaktDTO, email_config: EmailConfigDTO):
@@ -37,10 +36,8 @@ def send_html_email(tenant_id: str, kontakt: KontaktDTO, email_config: EmailConf
         },
         Source=email_config.email_from,
     )
-    if response.get('ResponseMetadata').get('HTTPStatusCode') == 200:
-        return True
-    else:
-        return False
+    if is_email_send_ok is False:
+        raise HttpException(f"Email send failed: {response}.", 500)
 
 
 def create_html_content(tenant_id: str, kontakt: KontaktDTO):

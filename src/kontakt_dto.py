@@ -1,6 +1,5 @@
 import uuid
 import json
-import os
 from datetime import datetime
 from lambda_utils.exception import ValidationException
 from lambda_utils.ttl import compute_ttl_for_datetime
@@ -21,7 +20,6 @@ def create(item: dict):
     check_required_field(email, 'email')
     check_email(email)
     gelesen = item.get('gelesen')
-    typ = item.get('typ')
     return KontaktDTO(
         name,
         betreff,
@@ -30,7 +28,6 @@ def create(item: dict):
         telefonnummer,
         email,
         gelesen,
-        typ,
         item.get('id')
     )
 
@@ -51,7 +48,6 @@ class KontaktDTO:
                  telefonnummer: str,
                  email: str,
                  gelesen: bool,
-                 typ: str,
                  id: str = None):
         if id:
             self.id = id
@@ -64,7 +60,6 @@ class KontaktDTO:
         self.telefonnummer = telefonnummer
         self.email = email
         self.gelesen = gelesen
-        self.typ = typ
         self.ttl = compute_ttl_for_datetime(zeitpunkt) if getenv_as_boolean(
             'TTL_FEATURE_ACTIVE', True) else None
 

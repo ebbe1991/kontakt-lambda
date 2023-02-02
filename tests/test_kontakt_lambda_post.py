@@ -13,8 +13,7 @@ def test_create_kontakt_ok(lambda_context, kontakt_table):
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
@@ -30,8 +29,7 @@ def test_create_kontakt_ok(lambda_context, kontakt_table):
         "0123/123456",
         "helene@fischer.de",
         False,
-        "Kontaktformular",
-        id).to_json())
+        id).to_json(),  {'Content-Type': 'application/json', "email_sent": "False"})
 
 
 def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, kontakt_table):
@@ -42,8 +40,7 @@ def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, kontakt_t
         "zeitpunkt": "2023-01-01T12.12",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
@@ -59,8 +56,7 @@ def test_create_kontakt_missing_field_name_bad_request(lambda_context, kontakt_t
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
@@ -76,8 +72,7 @@ def test_create_kontakt_missing_field_betreff_bad_request(lambda_context, kontak
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
@@ -110,8 +105,7 @@ def test_create_kontakt_missing_field_email_bad_request(lambda_context, kontakt_
         "nachricht": "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
         "zeitpunkt": "2023-01-01T12:30:00",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
@@ -128,8 +122,7 @@ def test_create_kontakt_invalid_email_bad_request(lambda_context, kontakt_table)
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     response = kontakt_handler.handle(
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
@@ -159,8 +152,7 @@ def test_create_kontakt_without_optional_parameters_ok(lambda_context, kontakt_t
         None,
         "helene@fischer.de",
         None,
-        None,
-        id).to_json())
+        id).to_json(), {'Content-Type': 'application/json', "email_sent": "False"})
 
 
 def test_create_kontakt_without_body_not_ok(lambda_context, kontakt_table):

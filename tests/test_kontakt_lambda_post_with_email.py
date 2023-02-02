@@ -13,8 +13,7 @@ def test_create_kontakt_send_email(lambda_context, kontakt_table, email_config_t
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     email_config_item = {
         'email-from': "noreply@mytenant1.com",
@@ -41,8 +40,7 @@ def test_create_kontakt_send_no_email(lambda_context, kontakt_table, email_confi
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
     email_config_item = {
         'email-from': "noreply@mytenant1.com",
@@ -56,7 +54,7 @@ def test_create_kontakt_send_no_email(lambda_context, kontakt_table, email_confi
 
     assert extract_status_code(response) == 201
     headers = extract_headers(response)
-    assert headers.get('email_sent') is None
+    assert headers.get('email_sent') == 'False'
     assert len(kontakt_controller.get_kontakte(DEFAULT_TENANT_ID)) == 1
 
 
@@ -69,8 +67,7 @@ def test_create_kontakt_send_email_without_config_exception(lambda_context, kont
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
-        "gelesen": False,
-        "typ": "Kontaktformular"
+        "gelesen": False
     }
 
     response = kontakt_handler.handle(

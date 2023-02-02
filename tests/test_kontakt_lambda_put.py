@@ -40,7 +40,6 @@ def test_update_kontakt_ok(lambda_context, kontakt_table):
         None,
         "helene@fischer.de",
         True,
-        None,
         createdKontakt.id).to_json())
 
 
@@ -125,7 +124,6 @@ def test_update_kontakt_set_null_value(lambda_context, kontakt_table):
         None,
         "helene@fischer.de",
         None,
-        None,
         createdKontakt.id).to_json())
 
 
@@ -150,30 +148,6 @@ def test_update_kontakt_without_body_not_ok(lambda_context, kontakt_table):
 
     assert response == lambda_response(400, json.dumps(
         {'error_text': 'body not present.'}))
-
-
-def test_update_kontakt_without_id_not_ok(lambda_context, kontakt_table):
-    item = {
-        'name': "Testuser Helene",
-        'betreff': "Gefällt mir!",
-        "nachricht": "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
-        "zeitpunkt": "2023-01-01T12:30:00",
-        "email": "helene@fischer.de",
-        "telefonnummer": "1234/1234"
-    }
-    kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item)
-
-    pathParameters = {
-        "id": ''
-    }
-
-    response = kontakt_handler.handle(
-        event('/api/kontakt/{id}', 'PUT', json.dumps(item), pathParameters), lambda_context)
-
-    assert response == lambda_response(400, json.dumps(
-        {'error_text': 'id not present.'}))
-
 
 def test_update_kontakt_without_tenant_id_not_ok(lambda_context, kontakt_table):
     headers = {

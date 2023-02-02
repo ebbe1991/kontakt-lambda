@@ -11,7 +11,6 @@ def test_create_content_with_telefonnummer():
         "0123/123456",
         "helene@fischer.de",
         False,
-        "Kontaktformular",
         id)
     content = email_service.create_html_content('example.com', kontakt)
     assert content == """
@@ -40,7 +39,6 @@ def test_create_content_without_telefonnummer():
         None,
         "helene@fischer.de",
         False,
-        "Kontaktformular",
         id)
     content = email_service.create_html_content('example.com', kontakt)
     assert content == """
