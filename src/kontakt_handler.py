@@ -3,11 +3,10 @@ import kontakt_controller
 import email_config_controller
 from kontakt_controller import KontaktDTO
 from lambda_utils.event_utils import extract_body, extract_tenant
-from lambda_utils.response_utils import response, empty_response
+from lambda_utils.response_utils import response, empty_response, to_json_array
 from lambda_utils.exception import ValidationException
 from lambda_utils.env_utils import getenv_as_boolean
 import email_service
-import json
 app = APIGatewayHttpResolver()
 
 
@@ -21,7 +20,7 @@ def post():
     tenant_id = extract_tenant(event)
     body = extract_body(event)
     send_email = getenv_as_boolean('SEND_EMAIL', False)
-    
+
     email_config = email_config_controller.get_email_config(
         tenant_id) if send_email else None
     kontakt = kontakt_controller.create_kontakt(tenant_id, body)
@@ -57,7 +56,8 @@ def getAll():
     event = app.current_event
     tenant_id = extract_tenant(event)
     kontakte = kontakt_controller.get_kontakte(tenant_id)
-    return response(200, json.dumps(kontakte, default=KontaktDTO.to_json))
+    body = to_json_array(list(map(KontaktDTO.to_json, kontakte)))
+    return response(200, body)
 
 
 @app.delete('/api/kontakt/<id>')
