@@ -36,7 +36,7 @@ def send_html_email(tenant_id: str, kontakt: KontaktDTO, email_config: EmailConf
         },
         Source=email_config.email_from,
     )
-    if is_email_send_ok is False:
+    if is_email_send_ok(response) is False:
         raise HttpException(f"Email send failed: {response}.", 500)
 
 
