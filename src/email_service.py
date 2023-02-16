@@ -52,8 +52,10 @@ def create_html_content(tenant_id: str, kontakt: KontaktDTO):
                     <h1>Neue Nachricht!</h1>
                     <p>Hallo! Du hast eine neue Nachricht für {tenant_id} erhalten!</p>
                     <p><i>{kontakt.name}</i> sendete am {kontakt.zeitpunkt} folgende Nachricht:</p>
-                    <h2>{kontakt.betreff}</h2>
-                    <p>{kontakt.nachricht}</p>
+                    <fieldset style=border: 1px solid>
+                        <legend><b>{kontakt.betreff}</b></legend>
+                        <div style="white-space: pre-wrap;">{kontakt.nachricht}</div>
+                    </fieldset>
                     <p>
                         Bitte anworte <i>{kontakt.name}</i> per Email unter <a href="mailto:{kontakt.email}">{kontakt.email}</a>
                         {telefonnumer_html}.

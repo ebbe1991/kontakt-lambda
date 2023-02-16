@@ -20,8 +20,10 @@ def test_create_content_with_telefonnummer():
                     <h1>Neue Nachricht!</h1>
                     <p>Hallo! Du hast eine neue Nachricht für example.com erhalten!</p>
                     <p><i>Testuser Helene</i> sendete am 2023-01-01 12:30:00 folgende Nachricht:</p>
-                    <h2>Gefaellt mir!</h2>
-                    <p>Mir gefaellt ihr Internetauftritt!</p>
+                    <fieldset style=border: 1px solid>
+                        <legend><b>Gefaellt mir!</b></legend>
+                        <div style="white-space: pre-wrap;">Mir gefaellt ihr Internetauftritt!</div>
+                    </fieldset>
                     <p>
                         Bitte anworte <i>Testuser Helene</i> per Email unter <a href="mailto:helene@fischer.de">helene@fischer.de</a>
                          oder per Telefon unter 0123/123456.
@@ -48,8 +50,10 @@ def test_create_content_without_telefonnummer():
                     <h1>Neue Nachricht!</h1>
                     <p>Hallo! Du hast eine neue Nachricht für example.com erhalten!</p>
                     <p><i>Testuser Helene</i> sendete am 2023-01-01 12:30:00 folgende Nachricht:</p>
-                    <h2>Gefaellt mir!</h2>
-                    <p>Mir gefaellt ihr Internetauftritt!</p>
+                    <fieldset style=border: 1px solid>
+                        <legend><b>Gefaellt mir!</b></legend>
+                        <div style="white-space: pre-wrap;">Mir gefaellt ihr Internetauftritt!</div>
+                    </fieldset>
                     <p>
                         Bitte anworte <i>Testuser Helene</i> per Email unter <a href="mailto:helene@fischer.de">helene@fischer.de</a>
                         .
