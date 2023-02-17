@@ -2,7 +2,7 @@
 
 ## Routen
 
-### Angebot 
+### Kontakt
 
 - POST api/kontakt
 - GET api/kontakt/<id>
