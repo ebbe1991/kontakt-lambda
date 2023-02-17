@@ -1,26 +1,19 @@
 # Kontakt-Lambda
 
-(wip)
+## Routen
 
-## Voraussetzungen
-- Python (3.9)
-    - boto3
-    - moto
-    - pytest
-    - aws_lambda_powertools
+### Angebot 
 
-## Umgebungsvariablen (wip)
-```sh
-TTL_FEATURE_ACTIVE=0|1:int
-SEND_EMAIL=0|1:int
-KONTAKT_TABLE_NAME=*:str
-EMAIL_CONFIG_TABLE_NAME=*:str
-```
-
-## Tests ausführen
-```sh
-pytest
-```
+- POST api/kontakt
+- GET api/kontakt/<id>
+- GET api/kontakt
+- PUT api/kontakt/<id>
+- DELETE api/kontakt/<id>
 
 
-# Api-Dokumentation (wip)
+## Umgebungsvariablen
+| Name                    | Beschreibung                                          |
+|-------------------------|-------------------------------------------------------|
+| KONTAKT_TABLE_NAME      | Name der Kontakt DynamoDB-Table                       |
+| EMAIL_CONFIG_TABLE_NAME | Name der Email-Config DynamoDB-Table                  |
+| TTL_FEATURE_ACTIVE      | Flag, ob TTL für die Kontakt DynamoDB-Table aktiv ist |

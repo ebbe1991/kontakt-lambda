@@ -8,11 +8,13 @@ os.environ['KONTAKT_TABLE_NAME'] = 'KONTAKT_TABLE'
 os.environ['EMAIL_CONFIG_TABLE_NAME'] = 'EMAIL_CONFIG_TABLE'
 os.environ['AWS_DEFAULT_REGION'] = 'eu-central-1'
 
+
 @pytest.fixture(name='lambda_context', scope="function")
 def lambda_context():
     os.environ['SEND_EMAIL'] = '0'
     os.environ['TTL_FEATURE_ACTIVE'] = '0'
     return None
+
 
 @pytest.fixture(scope='session')
 def ses():
@@ -22,10 +24,12 @@ def ses():
         ses.verify_email_identity(EmailAddress='noreply@mytenant1.com')
         yield ses
 
+
 @pytest.fixture(scope='session')
 def dynamodb():
     with mock_dynamodb():
         yield boto3.resource('dynamodb')
+
 
 @pytest.fixture(scope='function')
 def kontakt_table(dynamodb):
@@ -57,7 +61,6 @@ def kontakt_table(dynamodb):
     table.wait_until_exists()
     yield table
     table.delete()
-
 
 
 @pytest.fixture(scope='function')
