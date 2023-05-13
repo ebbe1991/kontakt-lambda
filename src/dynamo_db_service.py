@@ -22,6 +22,7 @@ def put_kontakt(tenant_id: str, kontakt: KontaktDTO):
             'nachricht': kontakt.nachricht,
             'zeitpunkt': kontakt.zeitpunkt.isoformat() if kontakt.zeitpunkt is not None else None,
             'telefonnummer': kontakt.telefonnummer,
+            'zusatzinfos': kontakt.zusatzinfos,
             'email': kontakt.email,
             'gelesen': kontakt.gelesen,
             'ttl': kontakt.ttl

@@ -42,8 +42,11 @@ def send_html_email(tenant_id: str, kontakt: KontaktDTO, email_config: EmailConf
 
 def create_html_content(tenant_id: str, kontakt: KontaktDTO):
     telefonnumer_html = ""
+    zusatzinfos_html = ""
     if kontakt.telefonnummer:
-        telefonnumer_html = f" oder per Telefon unter {kontakt.telefonnummer}"
+        telefonnumer_html = f" oder per Telefon unter {kontakt.telefonnummer}" 
+    if kontakt.zusatzinfos:
+        zusatzinfos_html = "<br>" + kontakt.zusatzinfos
 
     return f"""
            <html>
@@ -56,7 +59,7 @@ def create_html_content(tenant_id: str, kontakt: KontaktDTO):
                     <pre style="border:1px solid black;">{kontakt.nachricht}</pre>
                     <p>
                         Bitte anworte <i>{kontakt.name}</i> per Email unter <a href="mailto:{kontakt.email}">{kontakt.email}</a>
-                        {telefonnumer_html}.
+                        {telefonnumer_html}.{zusatzinfos_html}
                     </p>
                 </body>
             </html>

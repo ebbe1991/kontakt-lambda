@@ -38,6 +38,7 @@ def test_update_kontakt_ok(lambda_context, kontakt_table):
         "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
         datetime.fromisoformat("2023-01-01T12:30:00"),
         None,
+        None,
         "helene@fischer.de",
         True,
         createdKontakt.id).to_json())
@@ -121,6 +122,7 @@ def test_update_kontakt_set_null_value(lambda_context, kontakt_table):
         "Gefällt mir!",
         "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
         datetime.fromisoformat("2023-01-01T12:30:00"),
+        None,
         None,
         "helene@fischer.de",
         None,

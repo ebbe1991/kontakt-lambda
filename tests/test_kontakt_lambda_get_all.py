@@ -10,6 +10,7 @@ def test_get_kontakte_ok(lambda_context, kontakt_table):
         'betreff': "Gefaellt mir!",
         "nachricht": "Mir gefaellt ihr Internetauftritt!\nViele Grüße, Helene",
         "zeitpunkt": "2023-01-01T12:30:00",
+        "zusatzinfos": "Bitte dringend melden",
         "email": "helene@fischer.de"
     }
     item2 = {

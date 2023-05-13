@@ -33,6 +33,25 @@ def test_get_kontakt_ok(lambda_context, kontakt_table):
 
     assert response == lambda_response(200, createdKontakt.to_json())
 
+def test_get_kontakt_with_zusatzinfos_ok(lambda_context, kontakt_table):
+    item = {
+        'name': "Testuser Helene",
+        'betreff': "Gefaellt mir!",
+        "nachricht": "Mir gefaellt ihr Internetauftritt!\nViele Grüße, Helene",
+        "zeitpunkt": "2023-01-01T12:30:00",
+        "zusatzinfos": "Melde dich!",
+        "email": "helene@fischer.de"
+    }
+    createdKontakt = kontakt_controller.create_kontakt(
+        DEFAULT_TENANT_ID, item)
+
+    pathParameters = {
+        "id": createdKontakt.id
+    }
+    response = kontakt_handler.handle(event(
+        '/api/kontakt/{id}', 'GET', None, pathParameters), lambda_context)
+
+    assert response == lambda_response(200, createdKontakt.to_json())
 
 def test_get_kontakt_without_tenant_id_not_ok(lambda_context, kontakt_table):
     headers = {

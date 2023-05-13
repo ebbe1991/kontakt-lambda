@@ -13,6 +13,7 @@ def test_create_kontakt_ok(lambda_context, kontakt_table):
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
+        "zusatzinfos": "Bitte um Rückruf",
         "gelesen": False
     }
     response = kontakt_handler.handle(
@@ -27,6 +28,7 @@ def test_create_kontakt_ok(lambda_context, kontakt_table):
         "Mir gefaellt ihr Internetauftritt!\n Viele Grüße, Helene",
         datetime.fromisoformat("2023-01-01T12:30:00"),
         "0123/123456",
+        "Bitte um Rückruf",
         "helene@fischer.de",
         False,
         id).to_json(),  {'Content-Type': 'application/json', "email_sent": "False"})
@@ -149,6 +151,7 @@ def test_create_kontakt_without_optional_parameters_ok(lambda_context, kontakt_t
         "Gefällt mir!",
         "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
         datetime.fromisoformat("2023-01-01T12:30:00"),
+        None,
         None,
         "helene@fischer.de",
         None,

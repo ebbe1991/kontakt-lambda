@@ -13,6 +13,7 @@ def test_create_kontakt_send_email(lambda_context, kontakt_table, email_config_t
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
+        "zusatzinfos": "Bitte um Rückruf.",
         "gelesen": False
     }
     email_config_item = {

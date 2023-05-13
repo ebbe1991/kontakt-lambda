@@ -16,6 +16,7 @@ def create(item: dict):
     check_required_field(nachricht, 'nachricht')
     zeitpunkt = item.get('zeitpunkt')
     telefonnummer = item.get('telefonnummer')
+    zusatzinfos = item.get('zusatzinfos')
     email = item.get('email')
     check_required_field(email, 'email')
     check_email(email)
@@ -26,6 +27,7 @@ def create(item: dict):
         nachricht,
         None if zeitpunkt is None else fromisoformat(zeitpunkt),
         telefonnummer,
+        zusatzinfos,
         email,
         gelesen,
         item.get('id')
@@ -46,6 +48,7 @@ class KontaktDTO:
                  nachricht: str,
                  zeitpunkt: datetime,
                  telefonnummer: str,
+                 zusatzinfos: str,
                  email: str,
                  gelesen: bool,
                  id: str = None):
@@ -58,6 +61,7 @@ class KontaktDTO:
         self.nachricht = nachricht
         self.zeitpunkt = zeitpunkt
         self.telefonnummer = telefonnummer
+        self.zusatzinfos = zusatzinfos
         self.email = email
         self.gelesen = gelesen
         self.ttl = compute_ttl_for_datetime(zeitpunkt) if getenv_as_boolean(
