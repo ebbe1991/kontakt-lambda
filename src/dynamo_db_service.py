@@ -43,9 +43,20 @@ def get_kontakt(tenant_id: str, id: str):
 
 def get_kontakte(tenant_id: str) -> list:
     table = get_kontakte_table()
+    items = []
     response = table.query(
-        KeyConditionExpression=Key('tenant-id').eq(tenant_id)
+        KeyConditionExpression=Key('tenant-id').eq(tenant_id),
     )
+    items.extend(response['Items'])
+
+    while 'LastEvaluatedKey' in response:
+        response = table.query(
+            KeyConditionExpression=Key('tenant-id').eq(tenant_id),
+            ScanIndexForward=True,
+            ExclusiveStartKey=response['LastEvaluatedKey']
+        )
+        items.extend(response['Items'])
+
     return response['Items']
 
 
