@@ -12,9 +12,10 @@
 
 
 ## Umgebungsvariablen
-| Name                    | Beschreibung                                          |
-|-------------------------|-------------------------------------------------------|
-| KONTAKT_TABLE_NAME      | Name der Kontakt DynamoDB-Table                       |
-| EMAIL_CONFIG_TABLE_NAME | Name der Email-Config DynamoDB-Table                  |
-| TTL_FEATURE_ACTIVE      | Flag, ob TTL für die Kontakt DynamoDB-Table aktiv ist |
-| SEND_EMAIL              | Flag, ob der Kontakt als Email versendet werden soll  |
+| Name                    | Beschreibung                                                |
+|-------------------------|-------------------------------------------------------------|
+| KONTAKT_TABLE_NAME      | Name der Kontakt DynamoDB-Table                             |
+| EMAIL_CONFIG_TABLE_NAME | Name der Email-Config DynamoDB-Table                        |
+| TTL_FEATURE_ACTIVE      | Flag, ob TTL für die Kontakt DynamoDB-Table aktiv ist       |
+| TTL_DAYS                | Tage, die der Kontakt bei TTL aufbewahrt wird (default=100) |
+| SEND_EMAIL              | Flag, ob der Kontakt als Email versendet werden soll        |

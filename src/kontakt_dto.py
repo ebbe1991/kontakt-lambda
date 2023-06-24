@@ -1,5 +1,6 @@
 import uuid
 import json
+import os
 from datetime import datetime
 from lambda_utils.exception import ValidationException
 from lambda_utils.date_utils import compute_ttl_for_datetime
@@ -64,7 +65,7 @@ class KontaktDTO:
         self.zusatzinfos = zusatzinfos
         self.email = email
         self.gelesen = gelesen
-        self.ttl = compute_ttl_for_datetime(zeitpunkt) if getenv_as_boolean(
+        self.ttl = compute_ttl_for_datetime(zeitpunkt, int(os.getenv('TTL_DAYS', 100))) if getenv_as_boolean(
             'TTL_FEATURE_ACTIVE', True) else None
 
     def to_json(self):

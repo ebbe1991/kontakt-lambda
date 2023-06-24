@@ -6,6 +6,7 @@ from lambda_utils.event_utils import extract_body, extract_tenant
 from lambda_utils.response_utils import response, empty_response, to_json_array
 from lambda_utils.exception import ValidationException
 from lambda_utils.env_utils import getenv_as_boolean
+import os
 import email_service
 app = APIGatewayHttpResolver()
 
