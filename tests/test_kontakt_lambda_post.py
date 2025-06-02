@@ -132,6 +132,22 @@ def test_create_kontakt_invalid_email_bad_request(lambda_context, kontakt_table)
     assert response == lambda_response(
         400, json.dumps({'error_text': "invalid email address 'fischer.de'."}))
 
+def test_create_kontakt_valid_email_with_hyphen(lambda_context, kontakt_table):
+    item = {
+        "name": "Helene",
+        'betreff': "Super!",
+        "nachricht": "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
+        "zeitpunkt": "2023-01-01T12:30:00",
+        "email": "helene-fischer@fischer.de",
+        "telefonnummer": "0123/123456",
+        "gelesen": False
+    }
+    response = kontakt_handler.handle(
+        event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
+    id = extract_id(response)
+
+    assert id is not None
+
 
 def test_create_kontakt_without_optional_parameters_ok(lambda_context, kontakt_table):
     item = {
