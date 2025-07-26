@@ -2,7 +2,7 @@ import os
 
 import boto3
 import pytest
-from moto import mock_dynamodb, mock_ses
+from moto import mock_aws
 
 os.environ['KONTAKT_TABLE_NAME'] = 'KONTAKT_TABLE'
 os.environ['EMAIL_CONFIG_TABLE_NAME'] = 'EMAIL_CONFIG_TABLE'
@@ -18,7 +18,7 @@ def lambda_context():
 
 @pytest.fixture(scope='session')
 def ses():
-    with mock_ses():
+    with mock_aws():
         os.environ['AWS_SECURITY_TOKEN'] = 'test'
         ses = boto3.client('ses')
         ses.verify_email_identity(EmailAddress='noreply@mytenant1.com')
@@ -27,7 +27,7 @@ def ses():
 
 @pytest.fixture(scope='session')
 def dynamodb():
-    with mock_dynamodb():
+    with mock_aws():
         yield boto3.resource('dynamodb')
 
 

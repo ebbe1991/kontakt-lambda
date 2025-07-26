@@ -39,7 +39,7 @@ def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, kontakt_t
         'name': "Testuser Helene",
         'betreff': "Gefällt mir!",
         "nachricht": "Mir gefällt ihr Internetauftritt!\nViele Grüße, Helene",
-        "zeitpunkt": "2023-01-01T12.12",
+        "zeitpunkt": "2023-01-01T12x12",
         "email": "helene@fischer.de",
         "telefonnummer": "0123/123456",
         "gelesen": False
@@ -48,7 +48,7 @@ def test_create_kontakt_invalid_dateformat_bad_request(lambda_context, kontakt_t
         event('/api/kontakt', 'POST', json.dumps(item)), lambda_context)
 
     assert response == lambda_response(400, json.dumps(
-        {'error_text': "Invalid isoformat string: '2023-01-01T12.12'"}))
+        {'error_text': "Invalid isoformat string: '2023-01-01T12x12'"}))
 
 
 def test_create_kontakt_missing_field_name_bad_request(lambda_context, kontakt_table):

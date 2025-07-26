@@ -13,7 +13,7 @@ def test_delete_kontakt_ok(lambda_context, kontakt_table):
         "email": "helene@fischer.de"
     }
     createdKontakt = kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item)
+        DEFAULT_TENANT_ID, item, True)
 
     kontakte = kontakt_controller.get_kontakte(DEFAULT_TENANT_ID)
     assert len(kontakte) == 1

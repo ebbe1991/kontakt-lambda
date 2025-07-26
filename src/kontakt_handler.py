@@ -8,6 +8,7 @@ from lambda_utils.exception import ValidationException
 from lambda_utils.env_utils import getenv_as_boolean
 import os
 import email_service
+
 app = APIGatewayHttpResolver()
 
 
@@ -15,16 +16,26 @@ def handle(event: dict, context: dict):
     return app.resolve(event, context)
 
 
-@app.post('/api/kontakt')
+@app.post("/api/kontakt")
 def post():
     event = app.current_event
     tenant_id = extract_tenant(event)
     body = extract_body(event)
-    send_email = getenv_as_boolean('SEND_EMAIL', False)
+    send_email = getenv_as_boolean("SEND_EMAIL", False)
+    persist_kontakt = getenv_as_boolean("PERSIST_KONTAKT", True)
 
-    email_config = email_config_controller.get_email_config(
-        tenant_id) if send_email else None
-    kontakt = kontakt_controller.create_kontakt(tenant_id, body)
+    if not persist_kontakt and not send_email:
+        raise Exception(
+            "Config invalid. send_email:"
+            + str(send_email)
+            + ", persist_kontakt:"
+            + str(persist_kontakt)
+        )
+
+    email_config = (
+        email_config_controller.get_email_config(tenant_id) if send_email else None
+    )
+    kontakt = kontakt_controller.create_kontakt(tenant_id, body, persist_kontakt)
 
     if send_email:
         email_service.send_html_email(tenant_id, kontakt, email_config)
@@ -32,7 +43,7 @@ def post():
     return response(201, kontakt.to_json(), {"email_sent": [str(send_email)]})
 
 
-@app.put('/api/kontakt/<id>')
+@app.put("/api/kontakt/<id>")
 def put(id):
     event = app.current_event
     tenant_id = extract_tenant(event)
@@ -41,7 +52,7 @@ def put(id):
     return response(200, kontakt.to_json())
 
 
-@app.get('/api/kontakt/<id>')
+@app.get("/api/kontakt/<id>")
 def get(id):
     event = app.current_event
     tenant_id = extract_tenant(event)
@@ -52,7 +63,7 @@ def get(id):
         return empty_response(404)
 
 
-@app.get('/api/kontakt')
+@app.get("/api/kontakt")
 def getAll():
     event = app.current_event
     tenant_id = extract_tenant(event)
@@ -61,7 +72,7 @@ def getAll():
     return response(200, body)
 
 
-@app.delete('/api/kontakt/<id>')
+@app.delete("/api/kontakt/<id>")
 def delete(id):
     event = app.current_event
     tenant_id = extract_tenant(event)

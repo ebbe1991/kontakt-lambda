@@ -3,9 +3,10 @@ from lambda_utils.exception import UnknownIdException
 import dynamo_db_service
 
 
-def create_kontakt(tenant_id: str, dto: dict) -> KontaktDTO:
+def create_kontakt(tenant_id: str, dto: dict, persist_kontakt: bool) -> KontaktDTO:
     kontakt = create(dto)
-    dynamo_db_service.put_kontakt(tenant_id, kontakt)
+    if persist_kontakt:
+        dynamo_db_service.put_kontakt(tenant_id, kontakt)
     return kontakt
 
 

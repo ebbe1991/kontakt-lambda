@@ -15,7 +15,7 @@ def test_update_kontakt_ok(lambda_context, kontakt_table):
         "email": "helene@fischer.de",
     }
     createdKontakt = kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item
+        DEFAULT_TENANT_ID, item, True
     )
 
     pathParameters = {
@@ -53,7 +53,7 @@ def test_update_kontakt_required_field_to_null_not_ok(lambda_context, kontakt_ta
         "email": "helene@fischer.de",
     }
     createdKontakt = kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item
+        DEFAULT_TENANT_ID, item, True
     )
 
     pathParameters = {
@@ -101,7 +101,8 @@ def test_update_kontakt_set_null_value(lambda_context, kontakt_table):
         "telefonnummer": "1234/1234"
     }
     createdKontakt = kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item)
+        DEFAULT_TENANT_ID, item, True
+    )
 
     pathParameters = {
         "id": createdKontakt.id
@@ -139,7 +140,8 @@ def test_update_kontakt_without_body_not_ok(lambda_context, kontakt_table):
         "telefonnummer": "1234/1234"
     }
     createdKontakt = kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item)
+        DEFAULT_TENANT_ID, item, True
+    )
 
     pathParameters = {
         "id": createdKontakt.id
@@ -164,7 +166,8 @@ def test_update_kontakt_without_tenant_id_not_ok(lambda_context, kontakt_table):
         "telefonnummer": "1234/1234"
     }
     createdKontakt = kontakt_controller.create_kontakt(
-        DEFAULT_TENANT_ID, item)
+        DEFAULT_TENANT_ID, item, True
+    )
 
     pathParameters = {
         "id": createdKontakt.id

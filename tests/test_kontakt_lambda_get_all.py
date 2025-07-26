@@ -20,8 +20,8 @@ def test_get_kontakte_ok(lambda_context, kontakt_table):
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "uschi@fischer.de"
     }
-    kontakt_controller.create_kontakt(DEFAULT_TENANT_ID, item1)
-    kontakt_controller.create_kontakt(DEFAULT_TENANT_ID, item2)
+    kontakt_controller.create_kontakt(DEFAULT_TENANT_ID, item1, True)
+    kontakt_controller.create_kontakt(DEFAULT_TENANT_ID, item2, True)
 
     response = kontakt_handler.handle(
         event('/api/kontakt', 'GET'), lambda_context)
@@ -40,7 +40,7 @@ def test_get_kontakte__one_element_ok(lambda_context, kontakt_table):
         "zeitpunkt": "2023-01-01T12:30:00",
         "email": "helene@fischer.de"
     }
-    created_kontakt = kontakt_controller.create_kontakt(DEFAULT_TENANT_ID, item)
+    created_kontakt = kontakt_controller.create_kontakt(DEFAULT_TENANT_ID, item, True)
 
     response = kontakt_handler.handle(
         event('/api/kontakt', 'GET'), lambda_context)
